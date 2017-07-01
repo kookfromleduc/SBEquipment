@@ -379,4 +379,10 @@ textarea {
 
 table, th, td {
     padding: 5px;
+    border-bottom: 1px;
+    border-bottom-color: "#dddddd";
+}
+
+th {
+    font-size: 20px;
 }
