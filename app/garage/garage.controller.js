@@ -3,122 +3,134 @@
 
      angular
         .module('app.garage')
-        .controller('carsCtrl', carsCtrl)
-        .controller('carCtrl', carCtrl)
+        .controller('loginCtrl', loginCtrl)
+        .controller('coachesCtrl', coachesCtrl)
+        .controller('equipmentCtrl', equipmentCtrl)
+        .controller('coachCtrl', coachCtrl)
 
-        carsCtrl.$inject = ['$state', '$scope', '$stateParams', 'carsService'];
+        loginCtrl.$inject = ['$state', '$scope', '$stateParams', 'equipmentService'];
 
-        function carsCtrl($state, $scope, $stateParams, carsService) {
+        function loginCtrl($state, $scope, $stateParams, equipmentService) {
 
             var vm = this;
+            var password = 'sportball'
 
-            carsService.cars().$loaded().then(function(res) {
-                vm.gridCars.data = res;
-            });
-
-            vm.gridCars = {
-                showGridFooter: true,
-                enableSorting: true,
-                enableCellEditOnFocus: true,
-                enableFiltering: true,
-                columnDefs: [
-                    { name: '', field: '$id', shown: false, cellTemplate: 'app/garage/gridTemplates/editCar.html',
-                    width: 34, enableColumnMenu: false, headerTooltip: 'Edit Product', enableCellEdit: false, enableCellEdit: false, enableFiltering: false },
-                    { name:'manufacture', field: 'manufacture', enableHiding: false, enableFiltering: true, enableCellEdit: false},
-                    { name:'make', field: 'make', enableHiding: false, enableFiltering: true, enableCellEdit: false},
-                    { name:'year', field: 'year', enableHiding: false, enableFiltering: true, enableCellEdit: false, width: '10%', cellClass: 'grid-align-right' },
-                    { name:'color', field: 'color', enableHiding: false, width: '10%', enableCellEdit: false, cellClass: 'grid-align-right'},
-                    { name:'passengerSeating', field: 'passenger_seating', enableHiding: false, enableCellEdit: false, cellClass: 'grid-align-right'},
-                    { name: ' ', field: '$id', cellTemplate:'app/garage/gridTemplates/removeCar.html',
-                    width: 32, enableColumnMenu: false, enableCellEdit: false, enableFiltering: false }
-                ]
-            };
-
-            vm.removeCar = function(row) {
-                  carsService.removeCar(row.entity.$id);
+            vm.login = function(pw) {
+                if (pw == password) {
+                    $state.go('garage');
+                }
             }, function(error) {
                   vm.error = error;
             };
 
-            vm.editCar = function(row) {
-                  $state.go('car', {'rowEntity': row.entity});
+        }
+
+        coachesCtrl.$inject = ['$state', '$scope', '$stateParams', 'equipmentService'];
+
+        function coachesCtrl($state, $scope, $stateParams, equipmentService) {
+
+            var vm = this;
+
+            equipmentService.equipmentList().$loaded().then(function(res) {
+                vm.equipment = res;
+            });
+
+            equipmentService.coaches().$loaded().then(function(res) {
+                vm.coaches = res;
+            });
+
+            /*vm.removeCoach = function(row) {
+                  equipmentService.removeCoach(row.entity.$id);
+            }, function(error) {
+                  vm.error = error;
             };
 
-      }
+            vm.editCoach = function(row) {
+                  $state.go('coach', {'rowEntity': row.entity});
+            };*/
 
-        carCtrl.$inject = ['$state', '$scope', '$stateParams', 'carsService'];
+            vm.changeLocation = function(eq) {
+                console.log(eq);
+                equipmentService.updateEquipment(eq);
+            };
 
-        function carCtrl($state, $scope, $stateParams, carsService) {
+        }
+
+        equipmentCtrl.$inject = ['$state', '$scope', '$stateParams', 'equipmentService'];
+
+        function equipmentCtrl($state, $scope, $stateParams, equipmentService) {
             var vm = this;
             var mobileView = 992;
 
-            vm.car = {};
-            vm.car_id = {};
-            carsService.cars().$loaded().then(function(res) {
-                vm.totalCount = res.length;
-            });
+            vm.equipment = {};
+            vm.equipment_id = {};
 
-            vm.updateCar = function() {
-            if (vm.car_id != null)
-                vm.car.date_updated = firebase.database.ServerValue.TIMESTAMP;
-                vm.car.$save();
+            vm.updateEquipment = function() {
+            if (vm.equipment_id != null)
+                vm.equipment.date_updated = firebase.database.ServerValue.TIMESTAMP;
+                vm.equipment.$save();
             }, function(error) {
                 vm.error = error;
             };
 
-            vm.loadCar = function(id) {
-                carsService.car(id).$loaded().then(function(res) {
-                          vm.car = res;
-                          vm.carIndex = carsService.index(id);
+            vm.loadEquipment = function(id) {
+                equipmentService.equipment(id).$loaded().then(function(res) {
+                          vm.equipment = res;
                     });
             };
 
-            vm.addCar = function() {
-                carsService.addCar(vm.car).then(function(id) {
-                    vm.car_id = id;
-                    vm.loadCar(id);
+            vm.addEquipment = function() {
+                equipmentService.addEquipment(vm.equipment).then(function(id) {
+                    vm.equipment_id = id;
+                    vm.loadEquipment(id);
                 });
+                $state.go('garage');
             }, function(error) {
                 vm.error = error;
             };
 
             if ($stateParams.rowEntity != undefined) {
-                vm.car_id = $stateParams.rowEntity.$id;
-                vm.loadCar($stateParams.rowEntity.$id);
+                vm.equipment_id = $stateParams.rowEntity.$id;
+                vm.loadEquipment($stateParams.rowEntity.$id);
             } else {
-                vm.car_id = null;
+                vm.equipment_id = null;
             };
 
-            vm.next = function() {
-                var index = vm.carIndex + 1;
-                if (index != vm.totalCount) {
-                    vm.loadCar(carsService.key(index));
-                }
+        }
 
+        coachCtrl.$inject = ['$state', '$scope', '$stateParams', 'equipmentService'];
+
+        function coachCtrl($state, $scope, $stateParams, equipmentService) {
+            var vm = this;
+            var mobileView = 992;
+
+            vm.coach = {};
+            vm.coach_id = null;
+
+            equipmentService.coaches().$loaded().then(function(res) {
+                vm.totalCount = res.length;
+            });
+
+            vm.updateCoach = function() {
+            if (vm.coach_id != null)
+                vm.coach.date_updated = firebase.database.ServerValue.TIMESTAMP;
+                vm.coach.$save();
             }, function(error) {
                 vm.error = error;
             };
 
-            vm.back = function() {
-                var index = vm.carIndex - 1;
-
-                if (index < 0) key = 0
-                    vm.loadCar(carsService.key(index));
-
-            }, function(error) {
-                vm.error = error;
+            vm.loadCoach = function(id) {
+                equipmentService.coach(id).$loaded().then(function(res) {
+                          vm.coach = res;
+                    });
             };
 
-            vm.first = function() {
-                vm.loadCar(carsService.key(0));
-
-            }, function(error) {
-                vm.error = error;
-            };
-
-            vm.last = function() {
-                vm.loadCar(carsService.key(vm.totalCount - 1));
-
+            vm.addCoach = function() {
+                equipmentService.addCoach(vm.coach).then(function(id) {
+                    vm.coach_id = id;
+                    vm.loadCoach(id);
+                });
+                $state.go('garage');
             }, function(error) {
                 vm.error = error;
             };

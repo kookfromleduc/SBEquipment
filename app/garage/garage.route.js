@@ -10,20 +10,36 @@
     function configFunction($stateProvider) {
         $stateProvider
 
-        .state('garage', {
+        .state('login', {
             url: '/',
-            controller: 'carsCtrl as vm',
+            controller: 'loginCtrl as vm',
+            templateUrl: 'app/garage/login.html'
+
+        })
+
+        .state('garage', {
+            url: '/garage',
+            controller: 'coachesCtrl as vm',
             templateUrl: 'app/garage/garage.html'
 
         })
 
-        .state('car', {
-            url: '/car',
+        .state('equipment', {
+            url: '/garage/equipment',
             params: {
                 rowEntity: null,
               },
-            controller: 'carCtrl as vm',
-            templateUrl: 'app/garage/car.html'
+            controller: 'equipmentCtrl as vm',
+            templateUrl: 'app/garage/equipment.html'
+        })
+
+        .state('coach', {
+            url: '/garage/coach',
+            params: {
+                rowEntity: null,
+              },
+            controller: 'coachCtrl as vm',
+            templateUrl: 'app/garage/coach.html'
         })
 
     }

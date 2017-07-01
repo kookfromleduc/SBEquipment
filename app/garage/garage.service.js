@@ -3,46 +3,70 @@
 
     angular
         .module('app.garage')
-        .factory('carsService', carsService)
+        .factory('equipmentService', equipmentService)
 
-    carsService.$inject = ['$firebaseArray', '$firebaseObject'];
+    equipmentService.$inject = ['$firebaseArray', '$firebaseObject', 'DataService'];
 
-    function carsService($firebaseArray, $firebaseObject) {
+    function equipmentService($firebaseArray, $firebaseObject, DataService) {
 
           var root = firebase.database();
 
           var service = {
-              cars: cars,
-              addCar: addCar,
-              removeCar: removeCar,
-              car: car,
-              index: index,
-              key: key,
+              equipmentList: equipmentList,
+              addEquipment: addEquipment,
+              updateEquipment: updateEquipment,
+              removeEquipment: removeEquipment,
+              equipment: equipment,
+              coaches: coaches,
+              addCoach: addCoach,
+              removeCoach: removeCoach,
+              coach: coach
           };
 
           return service;
 
-          function cars() {
-              return $firebaseArray(root.ref('cars/'));
+          function equipmentList() {
+              return $firebaseArray(root.ref('equipment/'));
           }
 
-          function addCar(obj) {
+          function addEquipment(obj) {
               obj.date_added = firebase.database.ServerValue.TIMESTAMP;
-              return $firebaseArray(root.ref('cars/')).$add(obj).then(function(ref){
+              obj.location = 'Office';
+              return $firebaseArray(root.ref('equipment/')).$add(obj).then(function(ref){
                   return ref.key;
               });
           }
-          function removeCar(id) {
-              return root.ref('cars/'+ id).remove();
+
+          function updateEquipment(obj) {
+              obj.date_modified = firebase.database.ServerValue.TIMESTAMP;
+              return DataService.root.ref('equipment/'+ obj.$id).update({location: obj.location, date_modified: obj.date_modified});
           }
-          function car(id) {
-              return $firebaseObject(root.ref('cars/'+ id));
+
+          function removeEquipment(id) {
+              return root.ref('equipment/'+ id).remove();
           }
-          function index(id) {
-              return $firebaseArray(root.ref('cars')).$indexFor(id);
+
+          function equipment(id) {
+              return $firebaseObject(root.ref('equipment/'+ id));
           }
-          function key(index) {
-              return $firebaseArray(root.ref('cars')).$keyAt(index);
+
+          function coaches() {
+              return $firebaseArray(root.ref('coaches/'));
+          }
+
+          function addCoach(obj) {
+              obj.date_added = firebase.database.ServerValue.TIMESTAMP;
+              return $firebaseArray(root.ref('coaches/')).$add(obj).then(function(ref){
+                  return ref.key;
+              });
+          }
+
+          function removeCoach(id) {
+              return root.ref('coaches/'+ id).remove();
+          }
+
+          function coach(id) {
+              return $firebaseObject(root.ref('coaches/'+ id));
           }
     }
 

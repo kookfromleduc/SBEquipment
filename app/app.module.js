@@ -13,6 +13,7 @@
         'ui.grid.selection',
         'ui.grid.importer',
         'ngSanitize',
+        'ngTable'
         'dndLists',
         'app.garage',
     ])
