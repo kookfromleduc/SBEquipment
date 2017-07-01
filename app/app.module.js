@@ -14,7 +14,7 @@
         'ui.grid.importer',
         'ngSanitize',
         'dndLists',
-        'app.garage',
+        'app.garage'
     ])
 
     .config(configFunction)
