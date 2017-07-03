@@ -1,8 +1,6 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
-        <div class="navbar-header">
-            <h1 class="pull-left fa-2x fa fa-soccer-ball-o"> The Equipment Garage</h1>
-        </div>
+        <span><h1 class="fa-2x fa fa-soccer-ball-o"> The Equipment Garage</h1></span>
     </div>
 </nav>
 
@@ -18,15 +16,13 @@
         </div>
         <div class="col-xs-12"><br>
             <!--<div ui-grid="vm.gridEquipment" class="grid-500" ui-grid-edit ui-grid-cellNav></div>-->
-            <table width="100%">
+            <table class="colored" width="100%">
                   <tr height="60" >
                     <th>Equipment</th>
-                    <th width="60" id="right">Amount</th>
                     <th width="80" align="right">Location</th>
                   </tr>
                   <tr ng-repeat="e in vm.equipment">
                     <td>{{e.name}}</td>
-                    <td align="right">{{e.amount}}</td>
                     <td align="right">
                         <select ng-model="e.location" ng-change="vm.changeLocation(e)" ng-options="c.name as c.name for c in vm.coaches">
                         </select>
