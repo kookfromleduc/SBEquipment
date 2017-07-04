@@ -377,15 +377,6 @@ textarea {
     height: auto !important;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  select:focus,
-  textarea:focus,
-  input:focus {
-    font-size: 16px;
-    background: #eee;
-  }
-}
-
 table, th, td {
     padding: 5px;
     border-bottom: 1px solid #dddddd;
