@@ -354,8 +354,8 @@ word-break: break-word;
     color: #3c763d;
 }
 
-.colored tr:nth-child(even) {
-    background-color: #dddddd;
+.colored tr:nth-child(odd) {
+    background-color: #f8f8f8;
 }
 
 .quote_footer {
@@ -379,10 +379,39 @@ textarea {
 
 table, th, td {
     padding: 5px;
-    border-bottom: 1px;
-    border-bottom-color: "#dddddd";
+    border-bottom: 1px solid #dddddd;
 }
 
 th {
-    font-size: 20px;
+    font-size: 16px;
+}
+
+.container {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.picker {
+    padding: 2px;
+    margin: 6px;
+    background-color: transparent;
+    border: none;
+}
+
+.picker:focus {
+    outline: none;
+}
+
+body {
+    font-family: arial;
+}
+
+.center {
+    text-align: center;
+    color: #002d63;
+}
+
+.sportball-btn{
+    background-color: #002d63;
+    border-color: #002d63;
 }
