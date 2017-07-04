@@ -30,14 +30,42 @@
         function coachesCtrl($state, $scope, $stateParams, equipmentService) {
 
             var vm = this;
+            vm.newEquipment = {};
+            vm.newCoach = {};
 
             equipmentService.equipmentList().$loaded().then(function(res) {
+                res.sort(function(a, b){
+                    return a.name == b.name ? 0 : +(a.name> b.name) || -1;
+                });
                 vm.equipment = res;
             });
 
             equipmentService.coaches().$loaded().then(function(res) {
+                res.sort(function(a, b){
+                    return a.name == b.name ? 0 : +(a.name> b.name) || -1;
+                });
                 vm.coaches = res;
             });
+
+            vm.sortEquipment = function() {
+                equipmentService.equipmentList().$loaded().then(function(res) {
+                    res.sort(function(a, b){
+                        return a.name == b.name ? 0 : +(a.name> b.name) || -1;
+                    });
+                    vm.equipment = res;
+                });
+            };
+
+            vm.sortCoaches = function() {
+                equipmentService.coaches().$loaded().then(function(res) {
+                    res.sort(function(a, b){
+                        return a.name == b.name ? 0 : +(a.name> b.name) || -1;
+                    });
+                    vm.coaches = res;
+                });
+            };
+
+
 
             /*vm.removeCoach = function(row) {
                   equipmentService.removeCoach(row.entity.$id);
@@ -48,6 +76,22 @@
             vm.editCoach = function(row) {
                   $state.go('coach', {'rowEntity': row.entity});
             };*/
+
+            vm.addEquipment = function() {
+                equipmentService.addEquipment(vm.newEquipment);
+                vm.newEquipment = null;
+                vm.sortEquipment();
+            }, function(error) {
+                vm.error = error;
+            };
+
+            vm.addCoach = function() {
+                equipmentService.addCoach(vm.newCoach);
+                vm.newCoach = null;
+                vm.sortCoaches();
+            }, function(error) {
+                vm.error = error;
+            };
 
             vm.changeLocation = function(eq) {
                 console.log(eq);

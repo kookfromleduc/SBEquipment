@@ -32,9 +32,7 @@
           function addEquipment(obj) {
               obj.date_added = firebase.database.ServerValue.TIMESTAMP;
               obj.location = 'Office';
-              return $firebaseArray(root.ref('equipment/')).$add(obj).then(function(ref){
-                  return ref.key;
-              });
+              return DataService.root.ref('equipment').push({name: obj.name, location: obj.location, date_added: obj.date_added});
           }
 
           function updateEquipment(obj) {
@@ -56,9 +54,7 @@
 
           function addCoach(obj) {
               obj.date_added = firebase.database.ServerValue.TIMESTAMP;
-              return $firebaseArray(root.ref('coaches/')).$add(obj).then(function(ref){
-                  return ref.key;
-              });
+              return DataService.root.ref('coaches').push({name: obj.name, date_added: obj.date_added});
           }
 
           function removeCoach(id) {

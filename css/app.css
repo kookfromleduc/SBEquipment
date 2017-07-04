@@ -354,7 +354,7 @@ word-break: break-word;
     color: #3c763d;
 }
 
-.colored tr:nth-child(even) {
+.colored tr:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
@@ -389,4 +389,29 @@ th {
 .container {
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.picker {
+    padding: 2px;
+    margin: 6px;
+    background-color: transparent;
+    border: none;
+}
+
+.picker:focus {
+    outline: none;
+}
+
+body {
+    font-family: arial;
+}
+
+.center {
+    text-align: center;
+    color: #002d63;
+}
+
+.sportball-btn{
+    background-color: #002d63;
+    border-color: #002d63;
 }
